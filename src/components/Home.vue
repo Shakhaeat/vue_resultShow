@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
         
-       <router-link to="/get" class="btn btn-success text-center btn-md btn-block">SSC/HSC Result</router-link>
+       <router-link to="/stud" class="btn btn-success text-center btn-md btn-block">SSC/HSC Result</router-link>
       </div>
      </div>
    </div>

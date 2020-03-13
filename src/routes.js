@@ -4,7 +4,7 @@ import View from './components/ShowResult.vue'
 
 export const routes = [
     {
-    	path:'/get',
+    	path:'/stud',
     	component:Info
     },
 

@@ -1,21 +1,22 @@
 <template>
-	<!-- Content Wrapper. Contains page content -->
+  <!-- Content Wrapper. Contains page content -->
   <div class="content">
-   
+     <loading :active.sync="isLoading" :is-full-page="fullPage"></loading>
     <!-- Main content -->
     <section class="content">
       <div class="row justify-content-around">
-        <div class="col-8">
-          <div class="card">
+        <div class="col-md-2"></div> 
+        <div class="col-md-8">
+          <div class="card" v-if="infos!=null">
            
             <!-- /.card-header -->
-            <div class="card-body text-center">
-              <h3 class="card-title" v-if="infos!=null">Result of SSC or Equivalent Examination {{infos.data['year']}}</h3>
+            <div v-if="infos.data['roll_id']" class="card-body text-center">
+              <h3 class="card-title">Result of SSC or Equivalent Examination {{infos.data['year']}}</h3>
               <hr>
               <br>
               <div class="container"> 
                 <div class="text-center"> 
-                  <a href="/get" class="btn btn-info btn-sm"type="button" >Search Again</a> 
+                  <router-link to="/stud" class="btn btn-info btn-sm"type="button" >Search Again</router-link> 
                 </div> 
               </div>
               <br>
@@ -55,6 +56,7 @@
           </div>
            <!--  Grade -->
            <div>
+            <hr>
              <h4 class="text-center">Subject-Wise Grade/Marks</h4>
            </div>
              <div class="container"> 
@@ -90,14 +92,26 @@
           <br>
               <div class="container"> 
                 <div class="text-center"> 
-                  <a href="/get" class="btn btn-info btn-sm"type="button" >Search Again</a> 
+                  <router-link to="/stud" class="btn btn-info btn-sm"type="button" >Search Again</router-link> 
                 </div> 
               </div>
         </div>
         <!-- /.card-body -->
       </div>
+      
+        <div class="bs-example" v-if="infos!=null && infos.data['roll_id']==0"> 
+          <div>
+          <div class="card-header">Message From Server
+          </div>
+         <div class="card-body"> Result of your specified criteria is not found. Please check and try again..
+          <router-link to="/stud"><button type="button" class="close" data-dismiss="alert">&times;</button></router-link></div>
+          </div>
+        
+      </div>
+    
           <!-- /.card -->
       </div>
+      <div class="col-md-2"></div>  
         <!-- /.col -->
       </div>
       <!-- /.row -->
@@ -109,23 +123,39 @@
 
 <script>
   import axios from 'axios';
-    export default{
+  // Import component
+  import Loading from 'vue-loading-overlay';
+  // Import stylesheet
+  import 'vue-loading-overlay/dist/vue-loading.css';
+  // Init plugin
+  //Vue.use(VueLoading);
+  export default{
     data(){
       return {
         infos:null,
-        myobj:null
+        isLoading: false,
+        fullPage: false
+        //myobj:null
       }
     },
-
+    components: {
+      Loading
+    },
     mounted(){
+       this.isLoading = true;
+                // simulate AJAX
+                // setTimeout(() => {
+                //   this.isLoading = false
+                // },90),       
       axios.
-        post('http://localhost:7010/get/'+this.$route.params.degree+'/'+this.$route.params.year+'/'+this.$route.params.board+'/'+this.$route.params.roll)
+        post('http://nixdev1.xhost.name:7010/get/'+this.$route.params.degree+'/'+this.$route.params.year+'/'+this.$route.params.board+'/'+this.$route.params.roll)
          .then(response => (
+           this.isLoading = false,
           this.infos = response
          ))
-         // .then(function (response) {
-         //      console.log(response);
-         //  })
+         .then(function (response) {
+              console.log(response);
+          })
          // .then(
          //  console.log(this.infos)
          //  )

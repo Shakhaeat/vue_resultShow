@@ -1,7 +1,5 @@
 <template>
 	<!-- Content Wrapper. Contains page content -->
-  
-
 
     <!-- Main content -->
     <section class="content">
@@ -24,7 +22,7 @@
                   <div class="form-group row">
                     <label for="colFormLabel" class="col-sm-2 col-form-label">Degree: </label>
                     <div class="col-sm-10">
-                      <select required v-model="degree" id="degree" class="form-control text">
+                      <select required v-model="form.degree" id="degree" class="form-control text">
                         <option value="" disabled>Choose One</option>
                 	    <option selected value="ssc">SSC</option>
                 	    <option value="hsc">HSC</option>
@@ -35,7 +33,7 @@
                   <div class="form-group row">
                   	<label for="colFormLabel" class="col-sm-2 col-form-label">Year:</label>
                     <div class="col-sm-10">
-                      <select required v-model="year" id="year" class="form-control text">
+                      <select required v-model="form.year" id="year" class="form-control text">
                         <option value="" disabled>Choose One</option>  
                     	<option selected value="2008">2008</option>
                     	<option value="2009">2009</option>
@@ -46,7 +44,7 @@
                   <div class="form-group row">
                   	<label for="colFormLabel" class="col-sm-2 col-form-label">Board:</label>
                     <div class="col-sm-10">
-                      <select required v-model="board" id="board" class="form-control text">
+                      <select required v-model="form.board" id="board" class="form-control text">
                         <option value="" disabled>Choose One</option>
                     	<option selected value="dhaka">Dhaka</option>
                     	<option value="cumilla">Cumilla</option>
@@ -57,7 +55,7 @@
               <div class="form-group row">
                   	<label for="colFormLabel" class="col-sm-2 col-form-label">Roll:</label>
                     <div class="col-sm-10">
-                    	<input type="text" value="2" v-model="roll" id="roll" class="form-control text" placeholder="Enter Your Roll">
+                    	<input required type="text" value="2" v-model="form.roll" id="roll" class="form-control text" placeholder="Enter Your Roll">
                     </div>
                 </div>
 
@@ -69,8 +67,9 @@
 
                 <div class="card-footer">
                 <div class="row justify-content-around">
-                  <button type="submit" class="btn btn-success"><router-link class="btn btn-success" :to="`/get/${degree}/${year}/${board}/${roll}`">Get Result</router-link></button>
-                  </div>
+                	<button class="btn btn-success">Get Result</button>
+                  <!-- <router-link class="btn btn-success" :to="`/get/${degree}/${year}/${board}/${roll}`">Get Result</router-link>-->
+                  </div> 
                 </div>
               </form>
             </div>
@@ -83,42 +82,78 @@
 </template>
 
 <script>
-	import axios from 'axios';
+	// import axios from 'axios';
 	export default{
-		data() {
-	      return {
-            degree: '',
-            year: '',
-            board: '',
-            roll: null
-          }
-	    },
+		data () {
+            return {
+                // Create a new form instance
+                form: new Form({
+                    degree: '',
+                    year: '',
+                    board: '',
+                    roll: null
+                })
+            }
+        },
 
-		methods:{
-		  getResult () {
-            const formData = {
-              degree: this.degree,
-              year: this.year,
-              board: this.board,
-              roll: this.roll
+        methods:{
+		    getResult () {
+                const formData = {
+                    degree: this.form.degree,
+                    year: this.form.year,
+                    board: this.form.board,
+                    roll: this.form.roll
             }
             console.log(formData)
-            // this.$store.dispatch('get', {
-            // 	degree: formData.degree,
-            // 	year: formData.year,
-            // 	board: formData.board,
-            // 	roll: formData.roll
-            // })
-            // axios.post('http://localhost:7010/get/'+formData.degree+'/'+formData.year+'/'+formData.board+'/'+formData.roll)
-            //   .then(function (response) {
-            //      console.log(response);
-            //    })
-           //   .catch(function (error) {
-           //      console.log(error);
-           //   });
 
-          }
-	    }
+            this.$router.push('get/'+formData.degree+'/'+formData.year+'/'+formData.board+'/'+formData.roll)
+               
+           }
+       }
+
+
+
+
+
+		// data() {
+	 //      return {
+  //           degree: '',
+  //           year: '',
+  //           board: '',
+  //           roll: 2
+  //         }
+	 //    },
+
+		// methods:{
+		//   getResult () {
+  //           const formData = {
+  //             degree: this.degree,
+  //             year: this.year,
+  //             board: this.board,
+  //             roll: this.roll
+  //           }
+  //          // console.log(formData)
+
+  //           this.form.post('get/'+formData.degree+'/'+formData.year+'/'+formData.board+'/'+formData.roll)
+  //              .then(function (response) {
+  //                 console.log(response);
+  //               })
+  //           // this.$store.dispatch('get', {
+  //           // 	degree: formData.degree,
+  //           // 	year: formData.year,
+  //           // 	board: formData.board,
+  //           // 	roll: formData.roll
+  //           // })
+  //           // axios.post('http://localhost:7010/get/'+formData.degree+'/'+formData.year+'/'+formData.board+'/'+formData.roll)
+  //           //   .then(function (response) {
+  //           //      console.log(response);
+  //           //    })
+  //          //   .catch(function (error) {
+  //          //      console.log(error);
+  //          //   });
+
+  //         }
+	 //    }
 	}
 	
 </script>
